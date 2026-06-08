@@ -69,7 +69,7 @@ function injectIndicator() {
     span.id = 'ig-indicator';
     span.textContent = ' (does not follow you back)';
 
-    usernameEl.appendChild(span);
+    row.appendChild(span);
 }
 
 function removeIndicator() {
