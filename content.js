@@ -5,14 +5,20 @@ let currentUrl = window.location.href;
 setInterval(() => {
     if(window.location.href !== currentUrl) {
         currentUrl = window.location.href;
+        removeIndicator();
     }
+
     if(isProfilePage(currentUrl)) {
         const username = getUsernameFromUrl(currentUrl);
 
         (async() => {
             const userId = await getUserId(username);
             const followsBack = await checkFollowBack(userId);
-        })
+
+            if(!followsBack) {
+                injectIndicator();
+            }
+        }) ();
     }
 
 }, 1000);
@@ -50,3 +56,21 @@ async function checkFollowBack(targetId) {
     return data.followed_by; // true or false;
 }
 
+function injectIndicator() {
+    // guard since setinterval runs every sec
+    if(document.getElementById('ig-indicator')) return; // already injected
+
+    const usernameEl = document.querySelector('h2');
+    if(!usernameEl) return; // element not loaded yet
+
+    const span = document.createElement('span');
+    span.id = 'ig-indicator';
+    span.textContent = ' (does not follow you back)';
+
+    usernameEl.appendChild(span);
+}
+
+function removeIndicator() {
+    const existing = document.getElementById('ig-indicator');
+    if(existing) existing.remove();
+}
