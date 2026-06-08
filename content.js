@@ -60,8 +60,10 @@ function injectIndicator() {
     // guard since setinterval runs every sec
     if(document.getElementById('ig-indicator')) return; // already injected
 
-    const usernameEl = document.querySelector('h2');
-    if(!usernameEl) return; // element not loaded yet
+    const h2 = document.querySelector('h2');
+    if(!h2) return; // element not loaded yet
+
+    const row = h2.parentElement; // row with the 3 dots on browser
 
     const span = document.createElement('span');
     span.id = 'ig-indicator';
